@@ -9,17 +9,10 @@ export default class Main extends React.Component {
         this.moveBooks=this.moveBooks.bind(this)
     }
     moveBooks(event){
-        console.log(this.props.shelf)
-        console.log(event.target.value)
         if(this.props.moveBooks)
             this.props.moveBooks({
-                oldShelf:this.props.shelf,
                 newShelf:event.target.value,
-                book:{
-                        title:this.props.title,
-                        author:this.props.author,
-                        url:this.props.url
-                    }
+                bookid:this.props.id
             })
     }
     render(){
@@ -31,9 +24,9 @@ export default class Main extends React.Component {
                     <div className="book-shelf-changer">
                         <select value={this.state.selected} onChange={this.moveBooks}>
                         <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReadingBooks">Currently Reading</option>
-                        <option value="wantToReadBooks">Want to Read</option>
-                        <option value="readBooks">Read</option>
+                        <option value="currentlyReading">Currently Reading</option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
                         <option value="none">None</option>
                         </select>
                     </div>
