@@ -9,7 +9,7 @@ Instructions for development:
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
-## What You're Getting
+## Code Structure
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.

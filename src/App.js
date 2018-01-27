@@ -23,25 +23,34 @@ class BooksApp extends React.Component {
   
   updateQuery = (query) => {
     this.setState({query:query.trim()})
-    const {books} = this.state
-    BooksAPI.search(query).then((searchBooks)=>{
-      const myBooks = []
-       searchBooks.forEach(function (searchBook){
-        if(typeof searchBook.authors==="undefined"){
-          searchBook.authors=[""]
-        }
-        searchBook.shelf="none" //Default Value
-        books.filter((book) => book.id === searchBook.id).forEach(function (book){ //Get Shelf Status from MyReads
-          searchBook.shelf=book.shelf
-        })
-        myBooks.push(searchBook)
-      });
-      this.setState({books:myBooks})
-    }).catch((error) =>{
-      console.log(error) //At times no results are returned from Search API & forEach breaks.
-      this.setState({books:[]})
+    const self = this;
+    BooksAPI.getAll().then((books)=>{ //User Current books are always fetched to handle multiple tabs
+      this.setState({books})
+      
+    }).then(function(){
+      const {books} = self.state
+      BooksAPI.search(query).then((searchBooks)=>{
+        let myBooks = []
+         searchBooks.forEach(function (searchBook,index){
+          if(typeof searchBook.authors==="undefined"){
+            searchBook.authors=[""]
+          }
+          searchBook.shelf="none" //Default Value
+          books.filter((book) => book.id === searchBook.id).forEach(function (book){ //Get Shelf Status from MyReads
+            searchBook.shelf=book.shelf
+           // console.log(`book title: ${book.title} --- book shelf: ${book.shelf}`)
+          })
+          if(index===searchBooks.length-1){
+            myBooks=searchBooks;
+          }
+         
+        });
+        self.setState({books:myBooks})
+      }).catch((error) =>{
+        console.log(error) //At times no results are returned from Search API & forEach breaks.
+        self.setState({books:[]})
+      })
     })
-    
   }
 
   /*
