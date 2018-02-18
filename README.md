@@ -26,6 +26,7 @@ Instructions for development:
     ├── Components # React Components
     │   ├── Books.js #Represents a book with title,author, image and move operations
     │   ├── Main.js #Represents Main Read Page with the 3 shelves - Currently Reading, Want To Read and Read
+    │   ├── Search.js #Represents Search Page with input box for search and a result set if results are found
     ├── icons # Images for the app. 
     │   ├── add.svg
     │   ├── arrow-back.svg

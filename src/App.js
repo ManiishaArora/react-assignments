@@ -1,15 +1,14 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
-import './App.css'
-import Main from './Components/Main'
 import {Route} from 'react-router-dom'
-import Books from './Components/Books'
+import './App.css'
+import * as BooksAPI from './BooksAPI'
+import Main from './Components/Main'
+import Search from './Components/Search'
 
 class BooksApp extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      query:'',
       books:[]
     }
     this.moveBooks = this.moveBooks.bind(this)
@@ -18,38 +17,6 @@ class BooksApp extends React.Component {
   componentDidMount(){
     BooksAPI.getAll().then((books)=>{
       this.setState({books})
-    })
-  }
-  
-  updateQuery = (query) => {
-    this.setState({query:query.trim()})
-    const self = this;
-    BooksAPI.getAll().then((books)=>{ //User Current books are always fetched to handle multiple tabs
-      this.setState({books})
-      
-    }).then(function(){
-      const {books} = self.state
-      BooksAPI.search(query).then((searchBooks)=>{
-        let myBooks = []
-         searchBooks.forEach(function (searchBook,index){
-          if(typeof searchBook.authors==="undefined"){
-            searchBook.authors=[""]
-          }
-          searchBook.shelf="none" //Default Value
-          books.filter((book) => book.id === searchBook.id).forEach(function (book){ //Get Shelf Status from MyReads
-            searchBook.shelf=book.shelf
-           // console.log(`book title: ${book.title} --- book shelf: ${book.shelf}`)
-          })
-          if(index===searchBooks.length-1){
-            myBooks=searchBooks;
-          }
-         
-        });
-        self.setState({books:myBooks})
-      }).catch((error) =>{
-        console.log(error) //At times no results are returned from Search API & forEach breaks.
-        self.setState({books:[]})
-      })
     })
   }
 
@@ -77,35 +44,9 @@ class BooksApp extends React.Component {
 
 
   render() {
-    const {query,books} = this.state
     return (
       <div className="app">
-        <Route path="/search" render={()=>(
-            <div className="search-books">
-              <div className="search-books-bar">
-                <a className="close-search" href="/">Close</a>
-                <div className="search-books-input-wrapper">
-                  <input type="text" placeholder="Search by title or author"
-                  value={query} onChange={(event) => this.updateQuery(event.target.value)}/>
-
-                </div>
-              </div>
-              <div className="search-books-results">
-              <ol className="books-grid">
-              {
-                 query!=='' &&
-                  books.map(
-                    (book) => 
-                        <Books id={book.id}  key={book.id}
-                        title={book.title} author={book.authors[0]} url={book.imageLinks.thumbnail} 
-                               shelf={book.shelf}
-                               moveBooks={this.moveBooks}/>
-                    )
-              } 
-              </ol>
-              </div>
-          </div>
-        )}/>
+        <Route path="/search" render={()=><Search searchBooks={this.state.books} moveBooks={this.moveBooks} /> }/>
         <Route path="/" exact render={() => <Main mainBooks={this.state.books} moveBooks={this.moveBooks} />} />
      </div>
     )  

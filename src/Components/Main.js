@@ -34,7 +34,7 @@ export default class Main extends React.Component {
                     {
                         this.state.books.filter((book)=>book.shelf==="currentlyReading").map(
                             (currentlyReadingBook,index) => 
-                                <Books key={index} id={currentlyReadingBook.id}  title={currentlyReadingBook.title} author={currentlyReadingBook.authors[0]} url={currentlyReadingBook.imageLinks.thumbnail} 
+                                <Books key={index} id={currentlyReadingBook.id}  title={currentlyReadingBook.title} author={currentlyReadingBook.authors} url={currentlyReadingBook.imageLinks} 
                                        shelf="currentlyReading"
                                        moveBooks={this.moveBooks}/>
                             )
@@ -49,7 +49,7 @@ export default class Main extends React.Component {
                     {
                         this.state.books.filter((book)=>book.shelf==="wantToRead").map(
                             (wantToReadBook,index) => 
-                                <Books key={index} id={wantToReadBook.id} title={wantToReadBook.title} author={wantToReadBook.authors[0]} url={wantToReadBook.imageLinks.thumbnail} 
+                                <Books key={index} id={wantToReadBook.id} title={wantToReadBook.title} author={wantToReadBook.authors} url={wantToReadBook.imageLinks} 
                                        shelf="wantToRead"
                                        moveBooks={this.moveBooks}/>
                             )
@@ -64,7 +64,7 @@ export default class Main extends React.Component {
                     {
                         this.state.books.filter((book)=>book.shelf==="read").map(
                             (readBook,index) => 
-                                <Books key={index} id={readBook.id} title={readBook.title} author={readBook.authors[0]} url={readBook.imageLinks.thumbnail} 
+                                <Books key={index} id={readBook.id} title={readBook.title} author={readBook.authors} url={readBook.imageLinks} 
                                        shelf="read"
                                        moveBooks={this.moveBooks}/>
                             )
